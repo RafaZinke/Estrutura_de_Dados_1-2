@@ -1,4 +1,6 @@
+
 Program Pzim ;
+// PROGRAMA FEITO POR RAFAEL ZINK E HERON ZONTA
 // variaveis globais
 var
 // esse id é um contador para atribuir as novas pessoas criadas.
@@ -66,14 +68,14 @@ id,totalIngressos,cond,num1,fila:integer;
 	var i: integer;
 	pes:pessoa;
 		begin
-		 for i:= 1 to listaTorcedor1.topo do
+		 for i:= 1 to listaTorcedor1.topo -1 do
 		 	begin
 		 		pes := listaTorcedor1.torcedores[i];
 		 		writeln('|', pes.nome, pes.idPessoa);
 		 	end;
 		end;
 		
-//criando as pilhas de camarote e geral
+//criando as pilhas de camarote e atras do gol e lateral
 	procedure criaPilhaIngresso(var pilha:pilhaIngresso);
 	var
 	i:integer;
@@ -144,7 +146,7 @@ id,totalIngressos,cond,num1,fila:integer;
 	  	  			begin
 	  	  			  filaCamarote.idFila[filaCamarote.topo]:= p;
 	  	  				filaCamarote.topo := filaCamarote.topo + 1;
-	  	  				p.tipoFila:= 1;
+	  	  				p.tipoFila:= 2;
 	  	  			end
 	  	  				else
 	  	  					writeln('Valor informado incorreto');
@@ -236,9 +238,9 @@ id,totalIngressos,cond,num1,fila:integer;
 							  		  else
 							  		  totalIngressos := totalIngressos + (pilhaCamarote.topo * 150);
 							  		end;
-							end
-							else
-								writeln('Valor incorreto');										   
+							end;
+							
+																	   
 	  	  	end;
 
 Begin
@@ -253,7 +255,7 @@ listaTorcedor1.topo:= 1;
 //inicia o delimitador para 1
 id := 1;
 
- while cond  <> 10 do
+ while cond  <> 8 do
  	begin
  	writeln;
     writeln ('    MENU    ');
@@ -265,11 +267,12 @@ id := 1;
     writeln('5 - Verifica pilha Ingressos');
     writeln('6 - Valor arrecadado:');
     writeln('7- Lista torcedores:');
-    writeln('10 - Sair do programa');
+    writeln('8 - Sair do programa');
   	readln(cond);
   	
   	if cond = 1 then
   		begin
+  		if (filaGeral.topo < 50) or (filaCamarote.topo < 50) then
   		  insereFila(filaGeral,filaCamarote);
   		end;
   	if cond = 2 then
@@ -335,14 +338,9 @@ id := 1;
   			begin
   			 escreveTorcedores(); 			
   			end;
-  		if cond = 10 then
+  		if cond = 8 then
   		begin
   		  writeln('Encerrando programa');
-  		  break;
   		end;
  	end;
-//1 - > pessoa entra na fila
-//2 -> compra ingresso (primeira pessoa da fila é oferecida a opçao
-// de comprar igresso (1 a 6)) executa entao a procedure removeingresso da fila
-// e insere pessoa na lista de torcedores com a procedure insereTorcedor.
 End.
