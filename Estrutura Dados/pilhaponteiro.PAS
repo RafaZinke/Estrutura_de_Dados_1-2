@@ -19,15 +19,15 @@ begin
     readln (inf);
 end;
 
-Procedure Cria_fila(Var fila:ptnodo);
+Procedure Cria_pilha(Var pilha:ptnodo);
 
 Begin
-   fila:=nil;
+   pilha:=nil;
 End;
 
-{Funcao para Incluir no Inicio da fila}
+{Funcao para Incluir no Inicio da pilha}
 
-Procedure Inclui (Var fila:ptnodo;inf:tipo_inf);
+Procedure Inclui (Var pilha:ptnodo;inf:tipo_inf);
 var aux,aux2:ptnodo;
 
 Begin
@@ -39,15 +39,15 @@ Begin
    end
    else
 
-      if (fila=nil) then {Primeiro elemento}
+      if (pilha=nil) then {Primeiro elemento}
          begin
             aux^.dado:=inf;
-            aux^.prox:=fila;
-            fila:=aux;
+            aux^.prox:=pilha;
+            pilha:=aux;
          end
       else
-         begin {Inclui no Começo da Fila}
-            aux2:=fila;
+         begin {Inclui no Começo da pilha}
+            aux2:=pilha;
             while (aux2^.prox <> nil) do 
               aux2:=aux2^.prox;
             aux^.dado:=inf;
@@ -57,22 +57,22 @@ Begin
 End;
 
 
-{Funcao para Remover no Inicio da fila}
+{Funcao para Remover no Inicio da pilha}
 
-Procedure Remove (Var fila:ptnodo);
+Procedure Remove (Var pilha:ptnodo);
 var aux,aux2:ptnodo;
 
 
 Begin
-		writeln(fila^.dado);
-   if fila=nil then begin
+	
+   if pilha=nil then begin
       Gotoxy (5,20);
-      Writeln('fila Vazia');
+      Writeln('pilha Vazia');
       readkey;
    end
    else
       Begin
-         aux:= fila;
+         aux:= pilha;
          Gotoxy (5,20);
          while aux^.prox <> nil do
          begin
@@ -83,28 +83,26 @@ Begin
         	if aux2 <> nil then
         		aux2^.prox := nil
         	else
-        		fila:= nil;
+        		pilha:= nil;
          writeln('Elemento: ', aux^.dado, ' Removido');
          dispose(aux);
         
          readkey;
       End;
 End;
+		
 
-
-{Funcao para Contar Elementos da fila}
-
-Function Conta_Elementos (fila:ptnodo):byte;
+Function Conta_Elementos (pilha:ptnodo):byte;
 var aux:ptnodo;
     i:byte;
 
 Begin
-   if fila=nil then
+   if pilha=nil then
       i:=0
    else
       Begin
          i:=0;
-         aux:=fila;
+         aux:=pilha;
          while aux <> nil do
          begin
             i:=i+1;
@@ -118,7 +116,7 @@ End;
 
 begin
     op:=1;
-    cria_fila(f);
+    cria_pilha(f);
     while op<>0 do
     begin
        clrscr;
