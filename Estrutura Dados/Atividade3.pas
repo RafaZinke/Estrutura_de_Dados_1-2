@@ -4,6 +4,7 @@ type
 pessoa = record
 	nome: string;
 	copias: integer;
+	prioridade: boolean;
 end;
 
 ptnodo = ^elemento;
@@ -19,6 +20,7 @@ end;
 
 var
 filaMono, filaColor, filaPloter : Filas;
+numero, nfila: integer;
 
 procedure iniciaFila(var fila: Filas);
 begin
@@ -77,46 +79,216 @@ begin
 	end;
 end;
 
+procedure total (fila: Filas);
+var quantidadePessoas,quantidadeCopias : integer;
+aux : ptnodo;
+	begin
+	  aux := fila.primeiro;
+	  while aux <> nil do
+	  	begin
+	  	 quantidadePessoas := quantidadePessoas +1;
+	  	 quantidadeCopias := quantidadeCopias + aux^.p.copias;
+	  	 aux := aux^.prox;
+	  	end;
+	    writeln('Quantidade de pessoas na fila: ',quantidadePessoas); 
+	    writeln('Quantidade de copias totais na fila: ',quantidadeCopias);
+	end;
+
 procedure deletaValor(var fila: Filas);
-var aux: ptnodo;
+var
+  aux: ptnodo;
 begin
-  if fila.ultimo = nil then
+  if fila.primeiro = nil then
   begin
     writeln('A fila está vazia. Não há elementos para deletar.');
     exit;
   end;
 
-  aux := fila.ultimo;
+  aux := fila.primeiro;
 
   if fila.primeiro = fila.ultimo then
   begin
-    // Se a fila tiver apenas um elemento
     fila.primeiro := nil;
     fila.ultimo := nil;
   end
   else
   begin
-    // Se a fila tiver mais de um elemento
-    fila.ultimo := aux^.anterior;
-    fila.ultimo^.prox := nil;
+    fila.primeiro := aux^.prox;
+    fila.primeiro^.anterior := nil;
   end;
 
   Dispose(aux);
   writeln('Elemento deletado.');
-	end;
+end;
+
+	procedure prioridade(var fila: Filas);
+var
+  aux, anterior: ptnodo;
+  nomep: string;
+begin
+  if fila.primeiro = nil then
+  begin
+    writeln('A fila está vazia. Não há elementos para dar prioridade.');
+    exit;
+  end;
+
+  if fila.primeiro^.p.prioridade then
+  begin
+    writeln('O usuário ', fila.primeiro^.p.nome, ' já tem prioridade.');
+    exit;
+  end;
+
+  writeln('Que usuário da fila deseja dar prioridade?');
+  readln(nomep);
+
+  aux := fila.primeiro;
+  anterior := nil;
+
+  while aux <> nil do
+  begin
+    if aux^.p.nome = nomep then
+    begin
+      aux^.p.prioridade := true;
+
+      if anterior <> nil then
+      begin
+        anterior^.prox := aux^.prox;
+        if aux^.prox <> nil then
+          aux^.prox^.anterior := anterior
+        else
+          fila.ultimo := anterior;
+      end
+      else
+      begin
+        fila.primeiro := aux^.prox;
+        if fila.primeiro <> nil then
+          fila.primeiro^.anterior := nil
+        else
+          fila.ultimo := nil;
+      end;
+
+      aux^.prox := fila.primeiro;
+      aux^.anterior := nil;
+      if fila.primeiro <> nil then
+        fila.primeiro^.anterior := aux;
+      fila.primeiro := aux;
+
+      writeln('Prioridade dada ao usuário: ', nomep);
+      exit;
+    end;
+
+    anterior := aux;
+    aux := aux^.prox;
+  end;
+
+  writeln('Usuário não encontrado na fila.');
+end;
 	
 Begin
+	iniciaFila(filaMono);
 	iniciaFila(filaColor);
-	insereFila(filaColor);                    
-	insereFila(filaColor);
-	insereFila(filaColor);
-	lerValores(filaColor); 
-	deletaValor(filaColor);
-	lerValores(filaColor);
-	deletaValor(filaColor);
-	lerValores(filaColor);
-	deletaValor(filaColor);
-	lerValores(filaColor); 
-	insereFila(filaColor);
-	lerValores(filaColor);
+	iniciaFila(filaPloter);
+	
+	Writeln('Digite os respectivos valores para realizar as açoes:');
+writeln('1: insere');
+writeln('2: exclui');
+writeln('3: Imprime Fila');
+writeln('4: Total de pessoas/copias na fila');
+writeln('5: Colocar pessoa como prioridade');
+writeln('8: Sair do programa');
+	while (numero <> 8 ) do
+		begin
+		readln(numero);
+		
+		if numero = 1 then
+			begin
+				writeln('Digite 1: FILA MONO. Digite 2: FILA COLOR. Digite 3: FILA PLOTER.');
+					readln(nfila);
+					if nfila = 1 then
+						begin
+						insereFila(filaMono)
+						end;
+						if nfila = 2 then
+						begin
+						insereFila(filaColor)
+						end;
+						if nfila = 3 then
+						begin
+						insereFila(filaPloter)
+						end;
+						 
+			end;	
+		
+		if numero = 2 then 
+			begin
+			  writeln('Digite 1: FILA MONO. Digite 2: FILA COLOR. Digite 3: FILA PLOTER.');
+					readln(nfila);
+					if nfila = 1 then
+						begin
+						deletaValor(filaMono)
+						end;
+						if nfila = 2 then
+						begin
+						deletaValor(filaColor)
+						end;
+						if nfila = 3 then
+						begin
+						deletaValor(filaPloter)
+						end;
+			end;
+		if numero = 3 then
+			begin
+			  writeln('Digite 1: FILA MONO. Digite 2: FILA COLOR. Digite 3: FILA PLOTER.');
+					readln(nfila);
+					if nfila = 1 then
+						begin
+						lerValores(filaMono)
+						end;
+						if nfila = 2 then
+						begin
+						lerValores(filaColor)
+						end;
+						if nfila = 3 then
+						begin
+						lerValores(filaPloter)
+						end;
+			end;
+		if numero = 4 then
+			begin
+			 writeln('Digite 1: FILA MONO. Digite 2:FILA COLOR. Digite 3: FILA PLOTER.');
+					readln(nfila);
+					if nfila = 1 then
+						begin
+						total(filaMono)
+						end;
+						if nfila = 2 then
+						begin
+						total(filaColor)
+						end;
+						if nfila = 3 then
+						begin
+						total(filaPloter)
+						end;
+			end;
+		   
+	
+	if numero = 5 then
+		begin
+		writeln('Digite 1: FILA MONO. Digite 2: FILA COLOR. Digite 3: FILA PLOTER.');
+					readln(nfila);
+					if nfila = 1 then
+						begin
+						prioridade(filaMono)
+						end;
+						if nfila = 2 then
+						begin
+						prioridade(filaColor)
+						end;
+						if nfila = 3 then
+						begin
+						prioridade(filaPloter)
+						end;
+		end;
+		writeln('Digite um novo numero para continuar o programa: ');
+	end;
 End.
