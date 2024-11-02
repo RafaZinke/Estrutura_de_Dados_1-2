@@ -217,7 +217,7 @@ begin
   until opcao = 6;
 end;
 
-// Programa principal
+
 begin
   Menu();
 end.
